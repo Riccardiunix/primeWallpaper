@@ -12,21 +12,31 @@ def isPrime(n):
     
     return n-1
 
-arr = np.full((1366*768), 40, np.uint8)
-cprime = 128
-arr[1] = cprime    #2
-arr[2] = cprime    #3
-arr[4] = cprime    #5
-arr[6] = cprime    #7
+if '__main__' == __name__:
+    w = 1920
+    h = 1080
+    n = w*h
+    
+    fg = 128
+    bg = 40
+    
+    arr = np.full((n), bg, np.uint8)
+    for i in [0,1,2,4,6]:
+        arr[i] = fg
+    
+    array = []
+    i = 6
+    while i < n:
+        array.append(i-1)
+        if i+1 < n:
+            array.append(i+1)
+        i += 6
 
-pool = Pool()
-a = pool.map(isPrime, range(1, (1366*768) + 1, 2))
+    pool = Pool()
+    for i in  pool.map(isPrime, array):
+        if (i > 0):
+            arr[i] = fg
 
-for i in a:
-    if (i > 0):
-        print(i+1)
-        arr[i] = cprime
-
-arr= np.reshape(arr, (768, 1366))
-im = Image.fromarray(arr)
-im.save("prime_spiral.jpeg")
+    arr = np.reshape(arr, (h, w))
+    im = Image.fromarray(arr)
+    im.save("prime_spiral.jpg")
