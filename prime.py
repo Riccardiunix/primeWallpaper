@@ -1,6 +1,6 @@
-import numpy as np
 import math
-from multiprocessing import Pool
+import numpy as np
+import multiprocessing
 from PIL import Image
 
 def isPrime(n):
@@ -10,8 +10,8 @@ def isPrime(n):
     return n
 
 if '__main__' == __name__:
-    w = 1920
-    h = 1080
+    w = 7680
+    h = 4320
     n = w*h
     
     fg = 128
@@ -30,9 +30,9 @@ if '__main__' == __name__:
     if i == n:
         array.append(i-1)
     if array[-1] > n:
-        array + array[:-1]
+        array = array[:-1]
     
-    pool = Pool(4)
+    pool = multiprocessing.Pool(multiprocessing.cpu_count())
     for i in  pool.map(isPrime, array):
         if (i > 0):
             arr[i-1] = fg
